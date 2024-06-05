@@ -6,6 +6,8 @@ import { Toolbar } from "@/components/toobar"
 import { Cover } from "@/components/cover"
 import { Skeleton } from "@/components/ui/skeleton"
 import dynamic from "next/dynamic"
+import { useCallback } from "react"
+import debounce from 'lodash.debounce'
 
 interface DocumentIdPageProps {
   params: {
@@ -21,14 +23,12 @@ const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
   const Editor = dynamic(() => import("@/components/editor"), { ssr: false })
 
   const update = useMutation(api.documents.update)
-  
+
   const onChange = (content: string) => {
     update({
       id: params.documentId,
       content: content
     })
-
-    console.log('content = ', content)
   }
 
   if (document === undefined) {
